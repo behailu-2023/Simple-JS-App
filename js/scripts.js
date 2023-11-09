@@ -1,3 +1,1 @@
-alert('Hello world')
-var favoriteFood = Steak;
-document.write(favoriteFood);
+let polemonList=[{name: "pikachu", height: "0.4", type: ["field","fairy"]}, {name: "krabby", height: "0.4", type: "water"}, {name: "combee", height: "0.3", type: "bug"}]
