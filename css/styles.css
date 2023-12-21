@@ -1,5 +1,6 @@
+
 .button-class {
-    background-color: lightskyblue;
+    background-color:rgb(23, 79, 23);
     border: none;
     color: white;
     padding: 16px 32px;
@@ -7,5 +8,5 @@
     text-decoration: none;
     display: inline-block;
     font-size: 16px;
-    margin: 4px 2px;
+    margin: 16px 32px;
 }
