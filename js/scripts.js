@@ -1,21 +1,7 @@
 
 let pokemonRepository = (function () { 
-    let pokemonList = [
-        { name: 'Pikachu',
-        height: 0.4,
-        types: ['field', 'fairy'],},
-        {
-            name: 'Krabby',
-            height: 1,
-            types: ['water'], 
-        },
-        {
-            name: 'Combee',
-            height: 0.3,
-            types: ['bug'],
-        }
-    
-    ];
+    let pokemonList = [];
+    let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
     function add(pokemon) {
         if (typeof pokemon === 'object') { 
         pokemonList.push(pokemon);
@@ -25,7 +11,9 @@ let pokemonRepository = (function () {
         return pokemonList;
     }
     function showDetails(pokemon) {
-        console.log(pokemon);
+        loadDetails(pokemon).then(function () {
+            console.log(pokemon);
+        });
     }
     function addListItem(pokemon){
         let pokemonList = document.querySelector('.pokemon-list');
@@ -39,26 +27,52 @@ let pokemonRepository = (function () {
             showDetails(pokemon);
         });
     }
+    function loadList() {
+        return fetch(apiUrl).then(function (response) {
+            return response.json();
+        }).then(function (json) {
+            json.results.forEach(function (item) {
+                let pokemon = {
+                    name: item.name,
+                    detailsUrl: item.url
+                };
+                add(pokemon);
+            });
+        }).catch(function (e) {
+            console.error(e);
+        })
+    }
+
+    function loadDetails(item) {
+        let url = item.detailsUrl;
+        return fetch(url).then(function (response) {
+            return response.json();
+        }).then(function (details) {
+            // Now we add the details to the item
+            item.imageUrl = details.sprites.front_default;
+            item.height = details.height;
+            item.types = details.types;
+        }).catch(function (e) {
+            console.error(e);
+        });
+    }
+
     return{
         add: add,
         getAll: getAll,
-        addListItem: addListItem
+        addListItem: addListItem,
+        loadList: loadList,
+        loadDetails: loadDetails
     };
     
     })();
-    
-    //console.log(pokemonRepository.getAll());
-    pokemonRepository.add({name: 'Abra', height: 0.2, types: ['fire']});
-    console.log(pokemonRepository.getAll());
-    
-    pokemonRepository.getAll().forEach (function (pokemon){
-        /*if (pokemon.height > 0.4) {
-            document.write('<p>', pokemon.name + ' - ' + pokemon.height + ' Wow, that\'s big!; </p>');
-        } else {
-            document.write('<p>', pokemon.name + ' - ' + pokemon.height +   '</p>');
-        }*/
-        pokemonRepository.addListItem(pokemon);
+    pokemonRepository.loadList().then(function() {
+        pokemonRepository.getAll().forEach(function (pokemon) {
+            pokemonRepository.addListItem(pokemon);
+        });
     });
+    
+   
     
     
     
