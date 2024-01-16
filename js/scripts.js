@@ -43,7 +43,7 @@ let pokemonRepository = (function () {
         li.appendChild(button);
         button.classList.add('pokemon-name-button');
 
-        addEventListenerToButton(button, pokemon); //does need change ??
+        addEventListenerToButton(button, pokemon); 
     }
 
     function addEventListenerToButton(button, pokemon) {
