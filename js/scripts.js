@@ -1,11 +1,13 @@
-
+// Function for creating a Pokédex web application using Bootstrap Framework
+// It uses an API to fetch a list of Pokémon and their details, and then displays them on the web page.
 let pokemonRepository = (function () {
     let i = 0;
     let pokemonList = [];
+    // Pokemon API
     let apiUrl = 'https://pokeapi.co/api/v2/pokemon/?limit=150';
 
     
-
+ // Add a Pokemon Item to a list  
     function add(pokemon) {
         if (typeof pokemon === 'object' &&
             'name' in pokemon &&
@@ -16,11 +18,11 @@ let pokemonRepository = (function () {
             console.log('pokemon is not correct')
         }
     }
-
+// Return an Array of pokemons
     function getAll() {
         return pokemonList;
     }
-
+  // Function to filter pokemons by name
     function filterByName(name) {
         
             let containerElement = document.querySelector('.row');
@@ -36,7 +38,7 @@ let pokemonRepository = (function () {
             });
         
     }
-
+ // Create Pokemon Buttons List  
     function addListItem(pokemon) {
         let pokemonAddList = document.querySelector('.row');
         let divElement = document.createElement('div');
@@ -52,9 +54,7 @@ let pokemonRepository = (function () {
         divElement.appendChild(button);
         button.classList.add('btn', 'btn-lg', 'btn-block', 'list-btn');
     }
-
-    
-
+ //  Function to fetch the list of Pokemon Items from API
     function loadList() {
         return fetch(apiUrl).then(function (response) {
             return response.json();
@@ -65,7 +65,7 @@ let pokemonRepository = (function () {
                     detailsUrl: item.url
                 };
                 add(pokemon);
-                console.log(pokemon);
+                
             });
         }).catch(function (e) {
             console.error(e);
@@ -84,6 +84,7 @@ let pokemonRepository = (function () {
             console.error(e);
         });
     }
+// Display a Modal of Pokemon Item Details
     function showDetails(item) {
         pokemonRepository.loadDetails(item).then(function () {
             let titleElement = document.querySelector('#titleModal');
@@ -111,7 +112,7 @@ let pokemonRepository = (function () {
             containerTypes.appendChild(titleTypes);
 
             item.types.forEach((element) => {
-                let typeElement = document.createElement('button');
+                let typeElement = document.createElement('div');
                 typeElement.classList.add('btn-lg', 'type-content');
                 typeElement.innerText = element.type.name;
                 containerTypes.appendChild(typeElement);
